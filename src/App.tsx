@@ -47,13 +47,15 @@ function App() {
     // this is the height of each virtual item
     estimateSize: () => 50,
     overscan: 5,
+    onChange: (me)=> { console.log(` the virtualizer is changed `,me)}
   });
   const itemsInMems = rowVirtualizer.getVirtualItems();
 
   useEffect(() => {
     const [lastItem] = [...rowVirtualizer.getVirtualItems()].reverse();
 
-    console.log(`the last item is `,lastItem, `with all rows length = `, allRows?.length);
+    console.log(`the last item is `,lastItem, ` with all rows length = `, allRows?.length);
+    console.log(`has next page: `, hasNextPage,` still fetching `,isFetchingNextPage  )
 
     if (!lastItem) {
       return;
