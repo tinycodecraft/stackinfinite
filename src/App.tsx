@@ -47,15 +47,27 @@ function App() {
     // this is the height of each virtual item
     estimateSize: () => 50,
     overscan: 5,
-    onChange: (me)=> { console.log(` the virtualizer is changed `,me)}
+    onChange: (me) => {
+      console.log(` the virtualizer is changed `, me);
+    },
   });
   const itemsInMems = rowVirtualizer.getVirtualItems();
 
   useEffect(() => {
     const [lastItem] = [...rowVirtualizer.getVirtualItems()].reverse();
 
-    console.log(`the last item is `,lastItem, ` with all rows length = `, allRows?.length);
-    console.log(`has next page: `, hasNextPage,` still fetching `,isFetchingNextPage  )
+    console.log(
+      `the last item is `,
+      lastItem,
+      ` with all rows length = `,
+      allRows?.length
+    );
+    console.log(
+      `has next page: `,
+      hasNextPage,
+      ` still fetching `,
+      isFetchingNextPage
+    );
 
     if (!lastItem) {
       return;
@@ -127,7 +139,7 @@ function App() {
               {rowVirtualizer.getVirtualItems().map((virtualRow) => {
                 const isLoaderRow = virtualRow.index > allRows.length - 1;
                 const post = allRows[virtualRow.index];
-
+                // Please note that rowVirtualizer.measureElement does not work well if the infinite row items, so transform & absolute is used instead.
                 return (
                   <div
                     key={virtualRow.index}
