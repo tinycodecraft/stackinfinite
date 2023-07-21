@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import "./App.css";
@@ -32,6 +32,8 @@ function App() {
     (ctx) => fetchServerPage(10, ctx.pageParam),
     {
       getNextPageParam: (_lastGroup, groups) => groups.length,
+      // refetchInterval: number ( idle for specified seconds before next refetch)
+      // staleTime: number (keep fresh for specified seconds)
     }
   );
 
@@ -42,13 +44,16 @@ function App() {
   const rowVirtualizer = useVirtualizer({
     count: hasNextPage ? allRows.length + 1 : allRows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 100,
+    // this is the height of each virtual item
+    estimateSize: () => 50,
     overscan: 5,
   });
   const itemsInMems = rowVirtualizer.getVirtualItems();
 
   useEffect(() => {
     const [lastItem] = [...rowVirtualizer.getVirtualItems()].reverse();
+
+    console.log(`the last item is `,lastItem, `with all rows length = `, allRows?.length);
 
     if (!lastItem) {
       return;
